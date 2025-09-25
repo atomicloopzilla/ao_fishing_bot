@@ -8,19 +8,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Torch REQUIRED)
 find_package(OpenCV REQUIRED)
 
-# Add executable
-add_executable(fishing_bot
-  main.cpp
-  GameScreen.h
-  GameScreen.cpp
-  DebugDrawer.h
-  DebugDrawer.cpp
-  Tools.h
-  Tools.cpp
-  tinyfsm.hpp
-  json.hpp
-  FishingBot.h
-  FishingBot.cpp)
+file(GLOB SOURCE_FILES "*.cpp" "*.h" "*.hpp")
+add_executable(fishing_bot ${SOURCE_FILES})
+
+file(GLOB TEMPLATE_FILES "${CMAKE_SOURCE_DIR}/templates/*")
+source_group("templates" FILES ${TEMPLATE_FILES})
+source_group("config" FILES config.json)
+source_group("sources" FILES ${SOURCE_FILES} )
+
+if(DEFINED HAVE_CUDA)
+    target_compile_definitions(fishing_bot PRIVATE HAVE_CUDA=${HAVE_CUDA})
+endif()
+if(DEFINED HAVE_CL)
+    target_compile_definitions(fishing_bot PRIVATE HAVE_CL=${HAVE_CL})
+endif()
 
 # Link libraries
 target_link_libraries(fishing_bot ${TORCH_LIBRARIES})
@@ -32,9 +33,6 @@ target_include_directories(fishing_bot PRIVATE ${OpenCV_INCLUDE_DIRS})
 # Set properties for LibTorch
 set_property(TARGET fishing_bot PROPERTY CXX_STANDARD 17)
 
-# The following code block is suggested to be used on Windows.
-# According to https://github.com/pytorch/pytorch/issues/25457,
-# the DLLs need to be copied to avoid memory errors.
 if (MSVC)
   file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll")
   add_custom_command(TARGET fishing_bot
@@ -42,4 +40,20 @@ if (MSVC)
                      COMMAND ${CMAKE_COMMAND} -E copy_if_different
                      ${TORCH_DLLS}
                      $<TARGET_FILE_DIR:fishing_bot>)
+  file(GLOB OPENCV_DLLS "${OpenCV_DIR}/${OpenCV_ARCH}/${OpenCV_RUNTIME}/bin/*.dll")
+  add_custom_command(TARGET fishing_bot
+                     POST_BUILD
+                     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                     ${OPENCV_DLLS}
+                     $<TARGET_FILE_DIR:fishing_bot>)
 endif (MSVC)
+
+add_custom_command(TARGET fishing_bot POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "${CMAKE_SOURCE_DIR}/config.json"
+    $<TARGET_FILE_DIR:fishing_bot>)
+
+add_custom_command(TARGET fishing_bot POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${CMAKE_SOURCE_DIR}/templates"
+    "$<TARGET_FILE_DIR:fishing_bot>/templates")

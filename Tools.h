@@ -7,12 +7,15 @@
 #include <vector>
 #include <deque>
 #include <map>
-#include <windows.h>
 #include <iostream>
 #include <thread>
 #include <functional>
 #include <mutex>
 #include <random>
+#include <iostream>
+
+#define NOMINMAX
+#include <windows.h>
 
 class ScopedTimer
 {

@@ -1,24 +1,16 @@
+#include "Tools.h"
+
 #include <torch/torch.h>
 
-#include <iostream>
+#if HAVE_CUDA
 #include <opencv2/cudaarithm.hpp>
 #include <opencv2/cudafilters.hpp>
+#endif
 #include <opencv2/opencv.hpp>
-#define NOMINMAX
-#include <windows.h>
-
-#include <algorithm>
-#include <cctype>
-#include <chrono>
-#include <string>
-#include <vector>
 
 #include "DebugDrawer.h"
 #include "GameScreen.h"
-#include "Tools.h"
 #include "FishingBot.h"
-
-#define HAVE_CUDA 1
 
 void PrintLibTorchInfo()
 {

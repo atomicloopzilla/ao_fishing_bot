@@ -1,13 +1,19 @@
 #pragma once
+
+#include <opencv2/opencv.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/imgproc.hpp>
+
+#if HAVE_CUDA
 #include <opencv2/cudaimgproc.hpp>
 #include <opencv2/cudawarping.hpp>
 #include <opencv2/cudaarithm.hpp>
-#define NOMINMAX
-#include <windows.h>
+#elif HAVE_CL
+#include <opencv2/core/ocl.hpp>
+#endif
 
 #include <map>
+#include "Tools.h"
 
 
 class GameScreen
@@ -24,7 +30,9 @@ public:
     int32_t GetHeight() const { return m_height; }
 
     cv::Mat const & GetFrame() const { return m_frame; }
+#if HAVE_CUDA
     cv::cuda::GpuMat const & GetGpuFrame() { return m_gpuFrame; }
+#endif
 
     bool FindTemplateInFrame(std::string const& templateKey, cv::Point& matchLoc, cv::Rect searchRegion = cv::Rect());
     cv::Rect GetTemplateRect(std::string const& templateKey);
@@ -47,14 +55,25 @@ private:
     int32_t         m_top;
 
     cv::Mat             m_frame;
-    cv::cuda::GpuMat    m_gpuFrame;
-
+#if HAVE_CUDA
+    cv::cuda::GpuMat                    m_gpuFrame;
     cv::Ptr<cv::cuda::TemplateMatching> m_matcher;
+#elif HAVE_CL
+    cv::UMat                            m_gpuFrame;
+#else
+    cv::Mat                             m_gpuFrame;
+#endif
     bool m_matcherInitialized = false;
 
     struct Template
     {
+#if HAVE_CUDA
         cv::cuda::GpuMat image;
+#elif HAVE_CL
+        cv::UMat image;
+#else
+        cv::Mat image;
+#endif
         double threshold;
         cv::Rect imageSize;
     };
