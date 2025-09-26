@@ -1,10 +1,10 @@
 # AI Fishing Bot for Albion Online
 
-An intelligent fishing automation bot for Albion Online that operates completely within the game's terms of service.
+An intelligent fishing automation bot for Albion Online.
 
 ## How It Works
 
-This bot is **completely legal** and doesn't use any prohibited techniques such as:
+This bot is **completely technically legal** and doesn't use any prohibited techniques such as:
 - Process injection
 - Binary patching
 - OpenGL/DirectX API hooks
@@ -18,7 +18,7 @@ Instead, it works by:
 
 ## Features
 
-- ✅ **Safe & Legal** - Uses only visual analysis, no game modification
+- ✅ **Safe & Tech Legal** - Uses only visual analysis, no game modification
 - 🤖 **AI-Powered** - Advanced image recognition for reliable fishing detection
 - 🎯 **Precise** - Accurate timing and positioning for optimal results
 - 🖥️ **Non-Invasive** - Works externally without touching game files
