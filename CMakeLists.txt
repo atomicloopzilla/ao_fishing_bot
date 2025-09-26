@@ -9,9 +9,9 @@ find_package(Torch REQUIRED)
 find_package(OpenCV REQUIRED)
 
 file(GLOB SOURCE_FILES "*.cpp" "*.h" "*.hpp")
-add_executable(fishing_bot ${SOURCE_FILES})
-
 file(GLOB TEMPLATE_FILES "${CMAKE_SOURCE_DIR}/templates/*")
+add_executable(fishing_bot ${SOURCE_FILES} ${TEMPLATE_FILES} config.json)
+
 source_group("templates" FILES ${TEMPLATE_FILES})
 source_group("config" FILES config.json)
 source_group("sources" FILES ${SOURCE_FILES} )
@@ -49,7 +49,7 @@ if (MSVC)
 endif (MSVC)
 
 add_custom_command(TARGET fishing_bot POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    COMMAND ${CMAKE_COMMAND} -E copy
     "${CMAKE_SOURCE_DIR}/config.json"
     $<TARGET_FILE_DIR:fishing_bot>)
 

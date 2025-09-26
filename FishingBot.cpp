@@ -49,10 +49,7 @@ void StateIdle::tick()
             GameScreen::s_instance->SendMouseDown(matchLoc.x + 5, matchLoc.y + 5);
             std::this_thread::sleep_for(std::chrono::milliseconds((int32_t)randomWaitMs));
             GameScreen::s_instance->SendMouseUp(matchLoc.x + 5, matchLoc.y + 5);
-            randomWaitMs = RandomFloat(500, 1500);
-            std::cout << "Casting fishing line at: (" << (matchLoc.x + 5) << ", " << (matchLoc.y + 5) << ")" 
-                << " and delay of " << (int32_t)randomWaitMs << " ms" << std::endl;
-            std::this_thread::sleep_for(std::chrono::milliseconds((int32_t)randomWaitMs));
+            std::cout << "Casting fishing line at: (" << (matchLoc.x + 5) << ", " << (matchLoc.y + 5) << ")" << std::endl;
             
         }));
         transit<WaitForFishinFloat>();
@@ -79,7 +76,7 @@ void WaitForFishinFloat::tick()
     FishingState::tick();
     auto now = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - m_start).count();
-    if (elapsed < 3)
+    if (elapsed < 2)
     {
         return;
     }
@@ -117,7 +114,7 @@ void WaitForFish::tick()
     cv::Point matchLoc;
     auto templRect = GameScreen::s_instance->GetTemplateRect("fish");
     cv::Rect floatRegion(WaitForFishinFloat::s_lastFloatPos.x - 50, WaitForFishinFloat::s_lastFloatPos.y - 50,
-        templRect.width + 150, templRect.height + 150);
+        100, 100);
     cv::Rect screenRect(0, 0, GameScreen::s_instance->GetWidth(), GameScreen::s_instance->GetHeight());
     floatRegion = floatRegion & screenRect;
     DebugDrawer::s_instance->DrawAnnotation("Float Region ROI", floatRegion, cv::Scalar(50, 255, 0));
@@ -142,7 +139,7 @@ void WaitForFish::tick()
     {
         auto now = std::chrono::high_resolution_clock::now();
         auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(now - m_start).count();
-        if (elapsed > 30)
+        if (elapsed > 60)
         {
             std::cout << "Timeout waiting for fish bite, returning to idle." << std::endl;
             transit<StateIdle>();

@@ -50,17 +50,6 @@ void GameScreen::CaptureScreen()
     BitBlt(m_memDC, 0, 0, m_width, m_height, m_hdc, m_left, m_top, SRCCOPY | CAPTUREBLT);
     GdiFlush();
     GetDIBits(m_memDC, m_hBitmap, 0, m_height, m_frame.data, &m_bmi, DIB_RGB_COLORS);
-
-    /*// Convert frame to grayscale
-    cv::Mat grayscaleFrame;
-    if (m_frame.channels() == 3) {
-        cv::cvtColor(m_frame, grayscaleFrame, cv::COLOR_BGR2GRAY);
-        m_frame = grayscaleFrame;
-    } else if (m_frame.channels() == 1) {
-        // Already grayscale, no conversion needed
-    } else {
-        std::cerr << "Unexpected number of channels: " << m_frame.channels() << std::endl;
-    }*/
 #if HAVE_CUDA
     m_gpuFrame.upload(m_frame);
 #else
@@ -84,16 +73,7 @@ void GameScreen::LoadTemplates()
                 std::cerr << "Failed to load template image: " << entry.m_filePath << std::endl;
                 throw std::runtime_error("Failed to load template image: " + entry.m_filePath);
             }
-            /*// Convert template to grayscale
-            cv::Mat grayscaleTempl;
-            if (templ.channels() == 3) {
-                cv::cvtColor(templ, grayscaleTempl, cv::COLOR_BGR2GRAY);
-            } else if (templ.channels() == 1) {
-                grayscaleTempl = templ.clone();
-            } else {
-                std::cerr << "Unexpected template channels: " << templ.channels() << " for " << entry.m_filePath << std::endl;
-                continue;
-            }*/
+
             std::cout << "Uploading template to GPU: " << entry.m_filePath << std::endl;
             Template temp;
 #if HAVE_CUDA
@@ -142,6 +122,12 @@ void GameScreen::PrintMaxValues(int32_t const everyFrames)
     callCount = 0;
     std::cout << "=== Template max match values ===" << std::endl;
     for (const auto& entry : m_maxMatchValues)
+    {
+        std::cout << entry.first << ": " << entry.second << std::endl;
+    }
+    std::cout << "=====================" << std::endl;
+    std::cout << "=== Template average match values ===" << std::endl;
+    for (const auto& entry : m_averageValues)
     {
         std::cout << entry.first << ": " << entry.second << std::endl;
     }

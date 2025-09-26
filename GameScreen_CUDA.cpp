@@ -1,5 +1,6 @@
 #include "GameScreen.h"
 #include "Tools.h"
+#include "DebugDrawer.h"
 
 #if HAVE_CUDA
 
@@ -32,8 +33,8 @@ bool GameScreen::FindTemplateInFrame(std::string const& templateName, cv::Point&
         {
             gpuSearchRegion = m_gpuFrame;
         }
-        int resultCols = gpuSearchRegion.cols - gpuTempl.cols + 1;
-        int resultRows = gpuSearchRegion.rows - gpuTempl.rows + 1;
+        int resultCols = gpuSearchRegion.cols;// - gpuTempl.cols + 1;
+        int resultRows = gpuSearchRegion.rows;// - gpuTempl.rows + 1;
         if (resultCols <= 0 || resultRows <= 0)
         {
             throw std::runtime_error("Template is larger than search region.");
@@ -47,17 +48,21 @@ bool GameScreen::FindTemplateInFrame(std::string const& templateName, cv::Point&
         }
 
         m_matcher->match(gpuSearchRegion, gpuTempl, gpuResult);
-        cv::Mat result;
-        gpuResult.download(result);
+        
         double minVal, maxVal;
         cv::Point minLoc, maxLoc;
-        cv::minMaxLoc(result, &minVal, &maxVal, &minLoc, &maxLoc);
+        
+        cv::cuda::minMaxLoc(gpuResult, &minVal, &maxVal, &minLoc, &maxLoc);
         double maxSavedValue = m_maxMatchValues[templateName];
         if (maxVal > maxSavedValue)
         {
             m_maxMatchValues[templateName] = maxVal;
             std::cout << "New max match value for template (" << templateName << ") : " << maxVal << std::endl;
         }
+        double averageValue = m_averageValues[templateName];
+        averageValue = (averageValue + maxVal) / 2;
+        m_averageValues[templateName] = averageValue;
+
         //std::cout << "Template (" << templateName << ") match max value : " << maxVal << " (threshold : " << t.threshold << ")" << std::endl;
         if (maxVal >= t.threshold)
         {
@@ -67,10 +72,10 @@ bool GameScreen::FindTemplateInFrame(std::string const& templateName, cv::Point&
                 matchLoc.x += searchRegion.x;
                 matchLoc.y += searchRegion.y;
             }
-            return maxVal;
+            return true;
         }
     }
-    return 0.0;
+    return false;
 }
 
 #endif

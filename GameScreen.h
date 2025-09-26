@@ -32,6 +32,8 @@ public:
     cv::Mat const & GetFrame() const { return m_frame; }
 #if HAVE_CUDA
     cv::cuda::GpuMat const & GetGpuFrame() { return m_gpuFrame; }
+#elif HAVE_CL
+    cv::UMat const & GetGpuFrame() { return m_gpuFrame; }
 #endif
 
     bool FindTemplateInFrame(std::string const& templateKey, cv::Point& matchLoc, cv::Rect searchRegion = cv::Rect());
@@ -80,4 +82,5 @@ private:
 
     std::map<std::string, std::vector<Template> > m_templates;
     std::map<std::string, double> m_maxMatchValues;
+    std::map<std::string, double> m_averageValues;
 };

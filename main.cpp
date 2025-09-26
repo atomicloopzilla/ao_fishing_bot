@@ -704,11 +704,10 @@ int main(int argc, char* argv[])
             break;
         }
         gameScreen.CaptureScreen();
-        if (showDebug)
+        if (showDebug || justCapture)
         {
             debugDrawer.DrawFrame(gameScreen.GetFrame());
         }
-        
 
         if (justCapture)
         {

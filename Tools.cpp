@@ -15,7 +15,7 @@ ScopedTimer::~ScopedTimer()
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - m_start).count();
     if (s_averageTimes.find(m_label) == s_averageTimes.end())
     {
-        s_averageTimes[m_label] = duration;
+        s_averageTimes[m_label] = (double)duration;
     }
     else
     {

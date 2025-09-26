@@ -1,40 +1,48 @@
 ﻿{
   "water": [
     {
-      "file": "templates/water_day1.png",
+      "file": "templates/water_night1.png",
       "threshold": 0.7
     },
     {
-      "file": "templates/water_night1.png",
+      "file": "templates/water_day1.png",
       "threshold": 0.7
     }
   ],
   "fishing_float": [
     {
       "file": "templates/fishing_float1.png",
-      "threshold": 0.65
+      "threshold": 0.7
     },
     {
       "file": "templates/fishing_float2.png",
+      "threshold": 0.7
+    },
+    {
+      "file": "templates/fishing_float3.png",
+      "threshold": 0.7
+    },
+    {
+      "file": "templates/fishing_float4.png",
       "threshold": 0.65
     }
   ],
   "fish": [
     {
       "file": "templates/fish1.png",
-      "threshold": 0.67
+      "threshold": 0.65
     },
     {
       "file": "templates/fish2.png",
-      "threshold": 0.67
+      "threshold": 0.65
     },
     {
       "file": "templates/fish3.png",
-      "threshold": 0.67
+      "threshold": 0.65
     },
     {
       "file": "templates/fish4.png",
-      "threshold": 0.67
+      "threshold": 0.65
     }
   ],
   "float_low": [
@@ -60,15 +68,11 @@
   "float_high": [
     {
       "file": "templates/float_high1.png",
-      "threshold": 0.8
+      "threshold": 0.7
     },
     {
       "file": "templates/float_high2.png",
-      "threshold": 0.8
-    },
-    {
-      "file": "templates/float_high3.png",
-      "threshold": 0.8
+      "threshold": 0.7
     }
   ]
 }
