@@ -183,3 +183,16 @@ void GameScreen::SendMouseUp(int32_t x, int32_t y)
     // Send mouse up event
     SendInput(1, &input, sizeof(INPUT));
 }
+
+bool GameScreen::IsCursorOverWindow() const
+{
+    POINT cursorPos;
+    if (!GetCursorPos(&cursorPos))
+    {
+        return false;
+    }
+
+    // Check if cursor is within window bounds
+    return (cursorPos.x >= m_left && cursorPos.x < m_left + m_width &&
+            cursorPos.y >= m_top && cursorPos.y < m_top + m_height);
+}

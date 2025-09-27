@@ -44,7 +44,11 @@
   "float_medium": [
     {
       "file": "templates/float_medium1.png",
-      "threshold": 0.75
+      "threshold": 0.85
+    },
+    {
+      "file": "templates/float_medium2.png",
+      "threshold": 0.85
     }
   ],
   "float_high": [

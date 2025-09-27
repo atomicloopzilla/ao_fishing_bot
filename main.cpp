@@ -643,12 +643,12 @@ int main(int argc, char* argv[])
     }
     else
     {
-        std::cout << "No window title provided." << std::endl;
-        return 1;
+        windowTitle = "Albion Online Client";
     }
 
     bool justCapture = false;
     bool showDebug = false;
+    bool workOnlyOverWindow = true;
     // get list of command line arguments
     std::set<std::string> args;
     for (int i = 1; i < argc; i++)
@@ -671,6 +671,11 @@ int main(int argc, char* argv[])
         WaitForFish::s_annotationMode = true;
         WaitForFish::s_maxWaitFishSeconds = 15;
         std::cout << "Running in annotation mode." << std::endl;
+    }
+    if (args.find("--nowindowcheck") != args.end())
+    {
+        workOnlyOverWindow = false;
+        std::cout << "Disabling window focus check." << std::endl;
     }
     
 
@@ -729,7 +734,19 @@ int main(int argc, char* argv[])
                 continue;
             }
 
-            FishingState::current_state_ptr->tick();
+            // Only tick the state if mouse cursor is over the target window
+            if (!workOnlyOverWindow || gameScreen.IsCursorOverWindow())
+            {
+                FishingState::current_state_ptr->tick();
+            } else
+            {
+                if (frameCount % 100 == 0)
+                {
+                    std::cout << "Please move the mouse cursor over the game window." << std::endl;
+                    std::this_thread::sleep_for(std::chrono::milliseconds((int32_t)10));
+                }
+            }
+
             if (frameCount % 100 == 0)
             {
                 std::cout << "Current State: " << FishingState::current_state_ptr->m_name << std::endl;

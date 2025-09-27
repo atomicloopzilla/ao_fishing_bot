@@ -33,6 +33,7 @@ public:
     // input handling
     void SendMouseDown(int32_t x, int32_t y);
     void SendMouseUp(int32_t x, int32_t y);
+    bool IsCursorOverWindow() const;
 private:
     HWND            m_hwnd;
     HDC             m_hdc;

@@ -302,7 +302,7 @@ void CatchingFish::entry()
 
 void CatchingFish::tick()
 {
-    static int64_t s_maxHoldMouseMs = 1000;
+    static int64_t s_maxHoldMouseMs = 2000;
     FishingState::tick();
     cv::Point matchLoc;
     cv::Rect centerRegion(
