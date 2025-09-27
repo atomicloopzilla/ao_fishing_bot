@@ -184,6 +184,10 @@ JsonConfig::JsonConfig(const std::string& filename)
                         TemplateEntry entry;
                         entry.m_filePath = item["file"].get<std::string>();
                         entry.m_matchThreshold = item["threshold"].get<double>();
+                        if (item.contains("offset"))
+                        {
+                            entry.m_offset = item["offset"].get<int32_t>();
+                        }
                         templates.push_back(entry);
                     }
                     else
@@ -198,6 +202,10 @@ JsonConfig::JsonConfig(const std::string& filename)
                 TemplateEntry entry;
                 entry.m_filePath = value["file"].get<std::string>();
                 entry.m_matchThreshold = value["threshold"].get<double>();
+                if (value.contains("offset"))
+                {
+                    entry.m_offset = value["offset"].get<int32_t>();
+                }
                 m_templates[key] = {entry};
             }
             else
@@ -230,4 +238,31 @@ std::vector<std::string> JsonConfig::GetAllKeys() const
         keys.push_back(pair.first);
     }
     return keys;
+}
+
+FramesStack* FramesStack::s_instance = nullptr;
+
+FramesStack::FramesStack(int32_t maxFrames)
+{
+    s_instance = this;
+    m_maxFrames = maxFrames;
+}
+
+void FramesStack::AddFrame(cv::Mat const& frame)
+{
+    if (m_frames.size() >= m_maxFrames)
+    {
+        m_frames.pop_front();
+    }
+    m_frames.push_back(frame.clone());
+}
+
+void FramesStack::SaveFrame(int32_t index, std::string const& fileName)
+{
+    if (index < 0 || index >= static_cast<int32_t>(m_frames.size()))
+    {
+        std::cerr << "Invalid frame index: " << index << std::endl;
+        return;
+    }
+    cv::imwrite(fileName, m_frames[index]);
 }

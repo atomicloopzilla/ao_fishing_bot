@@ -13,9 +13,22 @@
 #include <mutex>
 #include <random>
 #include <iostream>
+#include <format>
 
 #define NOMINMAX
 #include <windows.h>
+
+#include <opencv2/opencv.hpp>
+#include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
+
+#if HAVE_CUDA
+#include <opencv2/cudaimgproc.hpp>
+#include <opencv2/cudawarping.hpp>
+#include <opencv2/cudaarithm.hpp>
+#elif HAVE_CL
+#include <opencv2/core/ocl.hpp>
+#endif
 
 class ScopedTimer
 {
@@ -104,10 +117,30 @@ public:
     {
         std::string m_filePath;
         double      m_matchThreshold;
+        int32_t     m_offset = 0;
     };
 
     std::vector<TemplateEntry> GetTemplates(std::string const& key) const;
     std::vector<std::string> GetAllKeys() const;
 private:
     std::map<std::string, std::vector<TemplateEntry> > m_templates;
+};
+
+class FramesStack
+{
+public:
+    static FramesStack* s_instance;
+
+    FramesStack(int32_t maxFrames);
+    ~FramesStack() = default;
+    
+    void AddFrame(cv::Mat const& frame);
+    void SaveFrame(int32_t index, std::string const& fileName);
+
+    cv::Mat const& GetFrame(int32_t index) const { return m_frames[index]; }
+    int32_t GetFramesCount() const { return static_cast<int32_t>(m_frames.size()); }
+
+private:
+    std::deque<cv::Mat> m_frames;
+    int32_t m_maxFrames;
 };

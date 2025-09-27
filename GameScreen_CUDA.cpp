@@ -66,6 +66,8 @@ bool GameScreen::FindTemplateInFrame(std::string const& templateName, cv::Point&
         //std::cout << "Template (" << templateName << ") match max value : " << maxVal << " (threshold : " << t.threshold << ")" << std::endl;
         if (maxVal >= t.threshold)
         {
+            std::cout << "Template hit: " << templateName << " with value: " << maxVal << " (threshold: " << t.threshold << ")" << std::endl;
+
             matchLoc = maxLoc;
             if (searchRegion.area() > 0)
             {

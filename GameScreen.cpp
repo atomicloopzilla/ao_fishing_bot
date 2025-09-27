@@ -88,6 +88,7 @@ void GameScreen::LoadTemplates()
             temp.image = templ;
 #endif
             temp.threshold = entry.m_matchThreshold;
+            temp.offset = entry.m_offset;
             temp.imageSize = cv::Rect(0, 0, templ.cols, templ.rows);
             m_templates[key].push_back(temp);
         }
@@ -111,6 +112,20 @@ cv::Rect GameScreen::GetTemplateRect(std::string const& templateName)
         }
     }
     return maxRect;
+}
+
+int32_t GameScreen::GetTemplateOffset(std::string const& templateName)
+{
+    if (m_templates.find(templateName) == m_templates.end())
+    {
+        throw std::runtime_error("Template not found: " + templateName);
+    }
+    auto templ = m_templates[templateName];
+    if (!templ.empty())
+    {
+        return templ[0].offset;
+    }
+    return 0;
 }
 
 void GameScreen::PrintMaxValues(int32_t const everyFrames)

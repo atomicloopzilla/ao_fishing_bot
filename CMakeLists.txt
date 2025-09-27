@@ -54,6 +54,11 @@ add_custom_command(TARGET fishing_bot POST_BUILD
     $<TARGET_FILE_DIR:fishing_bot>)
 
 add_custom_command(TARGET fishing_bot POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    "${CMAKE_SOURCE_DIR}/fishing_classifier_traced.pt"
+    $<TARGET_FILE_DIR:fishing_bot>)
+
+add_custom_command(TARGET fishing_bot POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CMAKE_SOURCE_DIR}/templates"
     "$<TARGET_FILE_DIR:fishing_bot>/templates")

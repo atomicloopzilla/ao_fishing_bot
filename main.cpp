@@ -649,21 +649,30 @@ int main(int argc, char* argv[])
 
     bool justCapture = false;
     bool showDebug = false;
-    if (argc > 2)
+    // get list of command line arguments
+    std::set<std::string> args;
+    for (int i = 1; i < argc; i++)
     {
-        std::string testArg = argv[2];
-        if (testArg == "--justcapture")
-        {
-            justCapture = true;
-            std::cout << "Running in just capture mode." << std::endl;
-        }
-        else if (testArg == "--showdebug")
-        {
-            showDebug = true;
-            std::cout << "Running in show debug mode." << std::endl;
-        }
+        args.insert(argv[i]);
     }
-
+    
+    if (args.find("--justcapture") != args.end())
+    {
+        justCapture = true;
+        std::cout << "Running in just capture mode." << std::endl;
+    }
+    if (args.find("--showdebug") != args.end())
+    {
+        showDebug = true;
+        std::cout << "Running in show debug mode." << std::endl;
+    }
+    if (args.find("--annotate") != args.end())
+    {
+        WaitForFish::s_annotationMode = true;
+        WaitForFish::s_maxWaitFishSeconds = 15;
+        std::cout << "Running in annotation mode." << std::endl;
+    }
+    
 
     HWND hwnd = FindGameWindow(windowTitle);
     if (!hwnd)
@@ -690,44 +699,52 @@ int main(int argc, char* argv[])
     DebugDrawer debugDrawer;
     AsyncJobsExecutor jobExecutor(3);
     JsonConfig config("config.json");
+    FramesStack framesStack(100);
     gameScreen.LoadTemplates();
 
     FishingState::start();
     
     int32_t frameCount = 0;
-    while (true)
+    try
     {
-        frameCount++;
-        if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(0x43)) // 'C' key
+        while (true)
         {
-            std::cout << "Ctrl-C detected, exiting..." << std::endl;
-            break;
-        }
-        gameScreen.CaptureScreen();
-        if (showDebug || justCapture)
-        {
-            debugDrawer.DrawFrame(gameScreen.GetFrame());
-        }
+            frameCount++;
+            if (GetAsyncKeyState(VK_CONTROL) && GetAsyncKeyState(0x43)) // 'C' key
+            {
+                std::cout << "Ctrl-C detected, exiting..." << std::endl;
+                break;
+            }
+            gameScreen.CaptureScreen();
+            if (showDebug || justCapture)
+            {
+                debugDrawer.DrawFrame(gameScreen.GetFrame());
+            }
 
-        if (justCapture)
-        {
-            std::string filename = "out/screenshot_" + std::to_string(frameCount) + ".png";
-            debugDrawer.SaveFrameToAFile(filename);
-            std::cout << "Saved screenshot to " << filename << std::endl;
-            continue;
-        }
+            if (justCapture)
+            {
+                std::string filename = "out/screenshot_" + std::to_string(frameCount) + ".png";
+                debugDrawer.SaveFrameToAFile(filename);
+                std::cout << "Saved screenshot to " << filename << std::endl;
+                continue;
+            }
 
-        FishingState::current_state_ptr->tick();
-        if (frameCount % 100 == 0)
-        {
-            std::cout << "Current State: " << FishingState::current_state_ptr->m_name << std::endl;
+            FishingState::current_state_ptr->tick();
+            if (frameCount % 100 == 0)
+            {
+                std::cout << "Current State: " << FishingState::current_state_ptr->m_name << std::endl;
+            }
+            if (showDebug)
+            {
+                debugDrawer.FlushFrame();
+            }
+            ScopedTimer::PrintAverageTimes(100);
+            gameScreen.PrintMaxValues(100);
         }
-        if (showDebug)
-        {
-            debugDrawer.FlushFrame();
-        }
-        ScopedTimer::PrintAverageTimes(100);
-        gameScreen.PrintMaxValues(100);
+    }
+    catch (const std::exception& e)
+    {
+        std::cout << "Exception in main loop: " << e.what() << std::endl;
     }
 
     std::cout << "bb" << std::endl;

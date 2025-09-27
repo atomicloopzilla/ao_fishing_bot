@@ -27,52 +27,34 @@
       "threshold": 0.65
     }
   ],
-  "fish": [
+  "fish1": [
     {
       "file": "templates/fish1.png",
-      "threshold": 0.65
-    },
-    {
-      "file": "templates/fish2.png",
-      "threshold": 0.65
-    },
-    {
-      "file": "templates/fish3.png",
-      "threshold": 0.65
-    },
-    {
-      "file": "templates/fish4.png",
-      "threshold": 0.65
+      "threshold": 0.72,
+      "offset": 6
     }
   ],
-  "float_low": [
+  "fish2": [
     {
-      "file": "templates/float_low1.png",
-      "threshold": 0.7
-    },
-    {
-      "file": "templates/float_low2.png",
-      "threshold": 0.7
+      "file": "templates/fish2.png",
+      "threshold": 0.72,
+      "offset": 7
     }
   ],
   "float_medium": [
     {
       "file": "templates/float_medium1.png",
-      "threshold": 0.7
-    },
-    {
-      "file": "templates/float_medium2.png",
-      "threshold": 0.7
+      "threshold": 0.75
     }
   ],
   "float_high": [
     {
       "file": "templates/float_high1.png",
-      "threshold": 0.7
+      "threshold": 0.75
     },
     {
       "file": "templates/float_high2.png",
-      "threshold": 0.7
+      "threshold": 0.75
     }
   ]
 }

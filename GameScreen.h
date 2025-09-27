@@ -1,18 +1,5 @@
 #pragma once
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/imgcodecs.hpp>
-#include <opencv2/imgproc.hpp>
-
-#if HAVE_CUDA
-#include <opencv2/cudaimgproc.hpp>
-#include <opencv2/cudawarping.hpp>
-#include <opencv2/cudaarithm.hpp>
-#elif HAVE_CL
-#include <opencv2/core/ocl.hpp>
-#endif
-
-#include <map>
 #include "Tools.h"
 
 
@@ -38,6 +25,7 @@ public:
 
     bool FindTemplateInFrame(std::string const& templateKey, cv::Point& matchLoc, cv::Rect searchRegion = cv::Rect());
     cv::Rect GetTemplateRect(std::string const& templateKey);
+    int32_t GetTemplateOffset(std::string const& templateKey);
     void PrintMaxValues(int32_t const everyFrames = 1000);
 
     void LoadTemplates();
@@ -77,6 +65,7 @@ private:
         cv::Mat image;
 #endif
         double threshold;
+        int32_t offset;
         cv::Rect imageSize;
     };
 
