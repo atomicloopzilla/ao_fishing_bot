@@ -2,6 +2,18 @@
 
 An intelligent fishing automation bot for Albion Online.
 
+# EDUCATIONAL PURPOSE DISCLAIMER:
+This project is created solely for educational and learning purposes. It is
+intended for fun and non-profit use only. This software is NOT intended for
+cheating, gaining unfair advantages, or any malicious purposes.
+
+The authors and LoopzillaTechnologies do not and will not assume any
+responsibility or liability for any consequences, damages, or issues that may
+arise from the use, misuse, or distribution of this software. Users assume
+full responsibility for their use of this software and must comply with all
+applicable laws, regulations, and terms of service of any platforms or
+services they interact with.
+
 ## How It Works
 
 This bot is **completely technically legal** and doesn't use any prohibited techniques such as:

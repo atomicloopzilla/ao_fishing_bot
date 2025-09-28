@@ -1,0 +1,23 @@
+Fishing Float Binary Classifier - Model Summary
+==================================================
+
+Dataset: 850 total images
+Training: 544 images
+Validation: 136 images
+Test: 170 images
+
+Model Parameters: 5173313
+Input Size: 100x100x3 (RGB)
+Output: Single probability (0-1)
+Classification Threshold: 0.5
+
+Final Test Performance:
+Accuracy: 0.9235 (92.35%)
+Precision: 0.9737
+Recall: 0.8706
+F1-Score: 0.9193
+
+Usage in C++:
+Load the 'fishing_classifier_traced.pt' file using LibTorch
+Input: Tensor of shape [1, 3, 100, 100] (normalized RGB image)
+Output: Single float value (>0.5 = bite, <=0.5 = no bite)
