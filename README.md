@@ -36,17 +36,7 @@ Instead, it works by:
 - 🖥️ **Non-Invasive** - Works externally without touching game files
 
 ## How to use it you can find in video description
-
-
-<a href="https://www.youtube.com/watch?v=NnYy6O84MqM">
-  <img src="https://img.youtube.com/vi/NnYy6O84MqM/0.jpg" alt="Video Description" width="400">
-</a>
-
-
 ---
-
-<div align="center">
-  <img src="Intro.png" alt="AI Fishing Bot Demo" />
-</div>
-
-
+<a href="https://www.youtube.com/watch?v=NnYy6O84MqM">
+  <img src="https://img.youtube.com/vi/NnYy6O84MqM/0.jpg" alt="Video Description" width=800>
+</a>
