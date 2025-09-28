@@ -37,7 +37,11 @@ Instead, it works by:
 
 ## How to use it you can find in video description
 
-[Video Description](https://www.youtube.com/watch?v=NnYy6O84MqM)
+
+<a href="https://www.youtube.com/watch?v=NnYy6O84MqM">
+  <img src="https://img.youtube.com/vi/NnYy6O84MqM/0.jpg" alt="Video Description" width="400">
+</a>
+
 
 ---
 
