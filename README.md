@@ -35,6 +35,10 @@ Instead, it works by:
 - 🎯 **Precise** - Accurate timing and positioning for optimal results
 - 🖥️ **Non-Invasive** - Works externally without touching game files
 
+## How to use it you can find in video description
+
+[Video Description](https://www.youtube.com/watch?v=NnYy6O84MqM)
+
 ---
 
 <div align="center">
